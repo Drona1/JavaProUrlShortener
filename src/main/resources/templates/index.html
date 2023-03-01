@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>dimabah.gmail.com</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+    <body>
+        <div style="width: 900px" class=".container position-absolute top-50 start-50 translate-middle">
+            <form class="d-flex" role="form" method="post" action="/shorten">
+                <input class="form-control me-2" type="url" name="longUrl"
+                       placeholder="Enter your long URL" required
+                th:value="${shortUrl} ? ${shortUrl} : ''">
+                <button class="btn btn-outline-success" type="submit">Shorten</button>
+            </form>
+            <br>
+            <div th:if="${urls}!=null" style="height: 300px" class="list-group overflow-auto">
+                    <div th:each="i: ${#numbers.sequence(urls.size()-1,0,-1)}" class="list-group-item">
+                    <form class="row" role="form" method="post" action="/delete">
+                        <div class="col-11">
+                            <div class="row">
+                                <p class="col-2 fw-bold">Long URL:</p>
+                                <p class="col-7 text-nowrap overflow-x-hidden" th:title="${urls[i].url}"
+                                th:utext="${urls[i].url}"></p>
+                                <small class="col-3 text-end"
+                                       th:text="${#dates.format(urls[i].lastAccess,'yyyy-MM-dd (HH:mm:ss)')}">
+                                </small>
+                            </div>
+                            <div class="row">
+                                <p class="col-2 fw-bold">Short URL:</p>
+                                <h5 class="col-8 text-center">
+                                    <a th:href="@{'/my/'+${urls[i].id}}"
+                                       th:text="'http://localhost:8080/my/'+${urls[i].id}"
+                                       class="link-success">
+                                    </a>
+                                </h5>
+                                <span class="col-2 mb-3 badge bg-secondary rounded-pill"
+                                th:text="'clicks: '+${urls[i].count}"></span>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-close col-1 align-self-center container text-center bg-warning text-dark"
+                        th:name="id" th:value="${urls[i].id}"></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
