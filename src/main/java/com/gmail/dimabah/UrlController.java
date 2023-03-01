@@ -1,5 +1,6 @@
 package com.gmail.dimabah;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,9 +8,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+
 @Controller
 public class UrlController {
     private final UrlService urlService;
+    @Value("${server.port}")
+    private String port;
 
     public UrlController(UrlService urlService) {
         this.urlService = urlService;
@@ -28,7 +32,7 @@ public class UrlController {
         UrlDTO urlDTO = new UrlDTO();
         urlDTO.setUrl(longUrl);
         long id= urlService.saveUrl(urlDTO);
-        String shortUrl = "http://localhost:8080/my/"+id;
+        String shortUrl = "http://localhost:"+ port +"/my/"+id;
         redirectAttributes.addAttribute("shortUrl", shortUrl);
         return "redirect:/";
     }

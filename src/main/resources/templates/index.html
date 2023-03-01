@@ -31,7 +31,9 @@
                                 <p class="col-2 fw-bold">Short URL:</p>
                                 <h5 class="col-8 text-center">
                                     <a th:href="@{'/my/'+${urls[i].id}}"
-                                       th:text="'http://localhost:8080/my/'+${urls[i].id}"
+                                       th:text="'http://localhost:'+
+                                         ${@environment.getProperty('server.port')} +
+                                         '/my/'+${urls[i].id}"
                                        class="link-success">
                                     </a>
                                 </h5>
